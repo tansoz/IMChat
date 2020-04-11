@@ -1,0 +1,131 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录</title>
+    <style>
+*{
+    margin:0px;
+    padding:0px;
+    user-select: none;
+}
+.clear {
+    clear: both;
+}
+.left{
+    float:left;
+}
+.right{
+    float:right;
+}
+/* titleBar */
+.titleBar .right div{
+    float: left;
+    margin-left:10px;
+}
+.titleBar{
+    padding:10px;
+    -webkit-app-region: drag;
+}
+.close_btn:active{
+    background-color: #ff3030;
+}
+.close_btn{
+    width:20px;
+    height:20px;
+    -webkit-app-region: no-drag;
+    border-radius:50%;
+    background-color: #ff506b;
+}
+.min_btn:active{
+    background-color: #ffc02d;
+}
+.min_btn{
+    width:20px;
+    height:20px;
+    -webkit-app-region: no-drag;
+    border-radius:50%;
+    background-color: #ffdc66;
+}
+/* Content */
+.Content{
+
+}
+.Avatar img{
+    height:150px;
+    width:150px;
+    display:block;
+    margin:30px auto;
+}
+.Avatar{
+
+}
+.Input input#LoginBtn:active{
+    background-color: #003eff;
+}
+.Input input#LoginBtn{
+    color:#ffffff;
+    background-color: #3085ff;
+}
+.Input input{
+    width:100%;
+    border:none;
+    background-color: #eeeeee;
+    height:45px;
+    padding:10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    outline:none;
+}
+.Input{
+    padding:20px;
+}
+    </style>
+</head>
+<body>
+    <div class="titleBar">
+        <div class="left">IMClient</div>
+        <div class="right">
+            <div class="min_btn" title="最小化" id="minBtn"></div>
+            <div class="close_btn" title="退出" id="closeBtn"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="Content">
+        <div class="Avatar">
+            <img src="https://i2.hdslb.com/bfs/face/cfd42f9e21deea7863980a754590ec4a9e610255.jpg@480w_480h.jpg">
+        </div>
+        <div class="Input">
+            <input type="text" id="UsernameInput" placeholder="用户名">
+            <input type="button" id="LoginBtn" value="登录">
+        </div>
+    </div>
+</body>
+<script>
+var elec = require("electron");
+closeEvent();
+loginEvent();
+minEvent();
+function closeEvent() {
+    var btn = document.getElementById("closeBtn");
+    btn.onclick = function(){
+        elec.ipcRenderer.send('closeLoginBox');
+    }
+}
+function loginEvent() {
+    var btn = document.getElementById("LoginBtn");
+    var input = document.getElementById("UsernameInput");
+    btn.onclick = function(){
+        elec.ipcRenderer.send('clickLoginBtn',{username:input.value});
+    }
+}
+function minEvent() {
+    var btn = document.getElementById("minBtn");
+    btn.onclick = function(){
+        elec.ipcRenderer.send('minBox');
+    }
+}
+</script>
+</html>

@@ -1,0 +1,448 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>主界面</title>
+    <style>
+        *{
+            margin:0px;
+            padding:0px;
+            font-family: "微软雅黑";
+        }
+        .clear {
+            clear: both;
+        }
+        .left{
+            float:left;
+        }
+        .right{
+            float:right;
+        }
+        /* titleBar */
+        .titleBar .right div{
+            float: left;
+            margin-left:10px;
+        }
+        .titleBar{
+            padding:10px;
+            -webkit-app-region: drag;
+        }
+        .close_btn:active{
+            background-color: #ff3030;
+        }
+        .close_btn{
+            width:20px;
+            height:20px;
+            -webkit-app-region: no-drag;
+            border-radius:50%;
+            background-color: #ff506b;
+        }
+        .min_btn:active{
+            background-color: #ffc02d;
+        }
+        .min_btn{
+            width:20px;
+            height:20px;
+            -webkit-app-region: no-drag;
+            border-radius:50%;
+            background-color: #ffdc66;
+        }
+        .max_btn:active{
+            background-color: #2eff62;
+        }
+        .max_btn{
+            width:20px;
+            height:20px;
+            -webkit-app-region: no-drag;
+            border-radius:50%;
+            background-color: #32ffa8;
+        }
+        /* Content */
+        .Content .right .InputBox .actionBox #sendBtn:active{
+            background-color: #003eff;
+        }
+        .Content .right .InputBox .actionBox #sendBtn{
+            padding:10px 20px;
+            background-color: #3085ff;
+            border-radius: 5px;
+            outline: none;
+            border:none;
+            color:#ffffff;
+        }
+        .Content .right .InputBox .actionBox{
+            padding:15px 15px 10px;
+        }
+        .Content .right .InputBox #textInput{
+            background-color: transparent;
+            width:100%;
+            border:none;
+            resize: none;
+            outline: none;
+            padding:15px;
+            padding-top:0px;
+            height:calc(100% - 65px);
+        }
+        .Content .right .InputBox{
+            padding-top:15px;
+            height:185px;
+            width:100%;
+            background-color: #fafafa;
+        }
+        .Content .right .ChatBox .ChatCard .name{
+            line-height: 40px;
+            height:40px;
+        }
+        .Content .right .ChatBox .ChatCard.ME .name,
+        .Content .right .ChatBox .ChatCard.ME .avatar{
+            float:right;
+        }
+        .Content .right .ChatBox .ChatCard.ME .avatar{
+            margin-left: 10px;
+            margin-right: 0px;
+        }
+        .Content .right .ChatBox .ChatCard .avatar{
+            height:40px;
+            width:40px;
+            background-color: #3085ff;
+            border-radius:50%;
+            margin-right:10px;
+        }
+        .Content .right .ChatBox .ChatCard .text .date{
+            font-size: 14px;
+            text-align: right;
+            margin-top:10px;
+        }
+        .Content .right .ChatBox .ChatCard.ME .text{
+            background-color: #ffffff;
+            color:#3085ff;
+            margin-left: 0px;
+            margin-right: 50px;
+            float:right;
+        }
+        .Content .right .ChatBox .ChatCard .text{
+            max-width: FIT-CONTENT;
+            min-width: 230px;
+            background-color: #3085ff;
+            color:#ffffff;
+            padding:10px;
+            border-radius:10px;
+            margin-left: 50px;
+        }
+        .Content .right .ChatBox .ChatCard.ME{
+            float:right;
+        }
+        .Content .right .ChatBox .ChatCard{
+            width:calc(100% - 30px);
+            padding:20px 15px;
+        }
+        .Content .right .ChatBox .list{
+            width:100%;
+            height:100%;
+            overflow: hidden;
+            overflow-y: auto;
+        }
+        .Content .right .ChatBox{
+            width:100%;
+            height:calc(100% - 251px);
+            overflow: hidden;
+        }
+        .Content .right .infoBar{
+            padding:15px;
+            background-color: #f8f8f8;
+        }
+        .Content > .right{
+            background-color: #efefef;
+            width:calc(100% - 260px);
+            height:calc(100% - 41px);
+        }
+        .Content .left .userlist .user.active{
+            background-color: #f8f8f8;
+        }
+        .Content .left .userlist .user .name{
+            height:40px;
+            line-height: 40px;
+        }
+        .Content .left .userlist .user.tips .tips{
+            display:block;
+        }
+        .Content .left .userlist .user .tips{
+            width:10px;
+            height:10px;
+            background-color: #32ffa8;
+            display: none;
+            border-radius: 50%;
+            line-height: 40px;
+        }
+        .Content .left .userlist .user .avatar{
+            width:40px;
+            margin-right: 10px;
+            background-color: #3085ff;
+            height:40px;
+            border-radius:50%;
+            float:left;
+        }
+        .Content .left .userlist .user{
+            padding:20px;
+            border-bottom: 1px solid #f3f3f3;
+        }
+        .Content .left .userlist{
+            overflow-y: auto;
+            padding:20px 0px;
+        }
+        .Content .left .cover{
+            overflow: hidden;
+            overflow-y: auto;
+            height:100%;
+            width:280px;
+        }
+        .Content > .left{
+            overflow: hidden;
+            width:260px;
+            height:calc(100% - 41px);
+        }
+        .Content{
+
+        }
+    </style>
+</head>
+<body>
+    <div class="titleBar">
+        <div class="left">IMClient - <span id="MyName"></span></div>
+        <div class="right">
+            <div class="min_btn" title="最小化" id="minBtn"></div>
+            <div class="max_btn" title="最大化" id="maxBtn"></div>
+            <div class="close_btn" title="退出" id="closeBtn"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="Content">
+        <div class="left">
+            <div class="cover">
+                <div class="userlist" id="userlist">
+                    <!--<div class="user active tips">
+                        <div class="avatar">
+                            <div class="tips"></div>
+                        </div>
+                        <div class="name">XXXXXX</div>
+                        <div class="clear"></div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="infoBar">
+                <div class="left" id="ChatBoxTitleName"></div>
+                <div class="right"></div>
+                <div class="clear"></div>
+            </div>
+            <div id="ChatBox" class="ChatBox">
+                <!--<div class="list">
+                    <div class="ChatCard">
+                        <div class="info">
+                            <div class="left avatar"></div>
+                            <div class="name">XXXX</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="text">
+                            <div class="content">ASDAIDJIOJi哦阿姐是滴哦九七i哦的骄傲i大窘艾金斯哦的角度讲哦i氨基酸滴哦角度</div>
+                            <div class="date">2020-09-03 12:00:12</div>
+                        </div>
+                    </div>
+                    <div class="ChatCard ME">
+                        <div class="info">
+                            <div class="left avatar"></div>
+                            <div class="name">XXXX</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="text">
+                            <div class="content">ASDAIDJIOJi哦阿姐是滴哦九七i哦的骄傲i大窘艾金斯哦的角度讲哦i氨基酸滴哦角度</div>
+                            <div class="date">2020-09-03 12:00:12</div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="InputBox">
+                <textarea id="textInput" placeholder="请输入消息" cols="30" rows="10"></textarea>
+                <div class="actionBox">
+                    <button id="sendBtn" class="right">发送</button>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+<script>
+    var isMax = false;
+    var elec = require("electron");
+
+    var ME = null;  // 存放自己的信息
+
+    elec.ipcRenderer.on('USERLIST',function(e,data){
+
+        BuildUsers(data.users);
+    });
+
+    elec.ipcRenderer.on('WHOAMI',function(e,data){
+
+        ME = data;
+
+        document.getElementById("MyName").innerHTML = ME.username;
+
+    });
+
+    elec.ipcRenderer.on('NEWMSG',function(e,data){
+
+        if(currentChatBox.UserName!=data[2]){
+            UserList[data[2]].classList.add("tips");
+        }
+        console.log(UserList[data[2]]);
+        UserList[data[2]].Add("",{
+            username:data[2],
+            date:data[1],
+            data:new Buffer.from(data[3], 'base64').toString(),
+        });
+
+    });
+    elec.ipcRenderer.send('WHOAMI');
+    elec.ipcRenderer.send('USERLIST');
+    elec.ipcRenderer.send('MISSMSG');
+    var UserList = {};
+    function BuildUsers(data){
+        var userlist = document.getElementById("userlist");
+        var act = null;
+        for(var i = 0;i<data.length;i++){
+            if(!UserList[data[i]]){
+                var tmp_div = document.createElement("div");
+                tmp_div.UserName = data[i];
+                UserList[data[i]] = tmp_div;
+                tmp_div.className = "user";
+                tmp_div.innerHTML = `<div class="avatar">
+                            <div class="tips"></div>
+                        </div>
+                        <div class="name">${data[i]}</div>
+                        <div class="clear"></div>`;
+                userlist.appendChild(tmp_div);
+                if(act==null){
+                    act = UserList[data[i]];
+                }
+            }
+        }
+        userEvent();
+        if(currentChatBox==null){
+            act.click();
+        }
+    }
+
+    closeEvent();
+    minEvent();
+    maxEvent();
+    function closeEvent() {
+        var btn = document.getElementById("closeBtn");
+        btn.onclick = function(){
+            elec.ipcRenderer.send('closeLoginBox');
+        }
+    }
+    function minEvent() {
+        var btn = document.getElementById("minBtn");
+        btn.onclick = function(){
+            elec.ipcRenderer.send('minBox');
+        }
+    }
+    function maxEvent() {
+        var btn = document.getElementById("maxBtn");
+        btn.onclick = function(){
+            if(!isMax){
+                elec.ipcRenderer.send('maxBox');
+            }else{
+                elec.ipcRenderer.send('unmaxBox');
+            }
+            isMax = !isMax;
+        }
+    }
+    listToBottom();
+    function listToBottom(){
+        var lists = document.getElementsByClassName("list");
+        for(var i = 0;i<lists.length;i++){
+            lists[i].scrollTop = lists[i].scrollHeight;
+        }
+    }
+
+    var currentChatBox = null;
+    var ChatBoxTitleName = document.getElementById("ChatBoxTitleName");
+    function userEvent(){
+
+        var ChatBox = document.getElementById("ChatBox");
+        var users = UserList;
+        for(var i in users){
+
+            if(!users[i].list){
+                users[i].list = document.createElement("div");
+                users[i].list.className = "list";
+                ChatBox.appendChild(users[i].list);
+            }
+
+            users[i].onclick = function(){
+                this.classList.remove("tips");
+
+                ChatBoxTitleName.innerText = this.UserName;
+                for(var b in users){
+                    users[b].classList.remove("active");
+                }
+                this.classList.add("active");
+
+                var lists = document.getElementsByClassName("list");
+                for(var c = 0;c<lists.length;c++){
+                    lists[c].style.display = "none";
+                }
+                this.list.style.display = "block";
+                currentChatBox = this;
+            };
+            users[i].Add = function(type,msg){
+
+                var content = `<div class="info">
+                            <div class="left avatar"></div>
+                            <div class="name">${msg.username}</div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="text">
+                            <div class="content">${msg.data}</div>
+                            <div class="date">${msg.date}</div>
+                        </div>`;
+                var msg_card = document.createElement("div");
+                msg_card.classList.add("ChatCard");
+                if(type=="me"){
+                    msg_card.classList.add("ME");
+                }
+                msg_card.innerHTML = content;
+                this.list.appendChild(msg_card);
+                this.list.scrollTop = this.list.scrollHeight + 9000;
+            }
+        }
+        sendEvent();
+        function sendEvent(){
+
+            var sendBtn = document.getElementById("sendBtn");
+            var textInput = document.getElementById("textInput");
+            sendBtn.onclick = function(){
+
+                // 防止发送空消息
+                if(textInput.value.trim()==""){
+                    return
+                }
+                elec.ipcRenderer.send('sendMsg',{msg:currentChatBox.UserName+"@"+new Buffer.from(textInput.value).toString('base64')+"\r\n"});
+                currentChatBox.Add('me',{
+                    username:ME.username,
+                    date:new Date().toLocaleTimeString(),
+                    data:textInput.value,
+                });
+                textInput.value = "";
+                currentChatBox.list.scrollTop = currentChatBox.list.scrollHeight + 9000;
+            };
+        }
+
+    }
+</script>
+</html>
